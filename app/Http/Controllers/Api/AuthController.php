@@ -54,7 +54,7 @@ class AuthController extends Controller
             'message' => 'Registration successful',
             'user' => $data,
             'token' => $token
-        ], 201);
+        ])->cookie('auth_token', $token, 60, null, null, false, true);
     }
 
     public function helloWorld(Request $request) {
