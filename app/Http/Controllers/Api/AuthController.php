@@ -30,7 +30,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'email' => $user->email,
             ]
-        ]);
+        ])->cookie('auth_token', $token, 60, null, null, false, true);
     }
 
     public function register(Request $request) {
