@@ -16,4 +16,6 @@ use App\Http\Controllers\Api\AuthController;
 */
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware(['auth:sanctum', 'token.expiration'])->get('/hello', [AuthController::class, 'helloWorld']);
+Route::middleware('refresh.token')->group(function () {
+    Route::post('/hello', [AuthController::class, 'hello']);
+});

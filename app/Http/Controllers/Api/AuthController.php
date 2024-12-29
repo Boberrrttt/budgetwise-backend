@@ -3,36 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
+use Carbon\Carbon; 
 
 class AuthController extends Controller
 {
-    public function login(Request $request) {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-        
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
-        $user = Auth::user();
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-            ]
-        ])->cookie('auth_token', $token, 60, null, null, false, true);
-    }
-
     public function register(Request $request) {
         // $data = $request->validate([
         //     'name' => 'required|string|max:255',
@@ -48,30 +29,42 @@ class AuthController extends Controller
             'password' => Hash::make($data['password'])
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(1))->plainTextToken;
+        $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
 
         return response()->json([
             'message' => 'Registration successful',
             'user' => $data,
-            'token' => $token
-        ])->cookie('auth_token', $token, 60, null, null, false, true);
+            'accessToken' => $accessToken
+        ])
+        ->cookie('accessToken', $accessToken, null, null, false, true)
+        ->cookie('refreshToken', $refreshToken,  null, null, false, true);
+    }
+    
+    public function login(Request $request) {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if(!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Invalid Credentials'], 401);
+        }
+
+        $user = Auth::user();
+
+        $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(1))->plainTextToken;
+        $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
+
+        return response()->json(['message' => 'Login successful'])
+        ->cookie('accessToken', $accessToken,  null, null, null, true, false, false, 'None')
+        ->cookie('refreshToken', $refreshToken,  null, null, null, true, false, false, 'None');
+
     }
 
-    public function helloWorld(Request $request) {
-        $user = auth()->user(); 
-    
-        if (!$user) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
-        }
-    
-        return response()->json([
-            'message' => 'Hello World',
-            'token' => $request->bearerToken(), 
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-            ]
-        ]);
+    public function hello(Request $request) {
+        return response()->json(['message' => 'Hello World']);
     }
+    
     
 }
