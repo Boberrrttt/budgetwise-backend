@@ -37,8 +37,8 @@ class AuthController extends Controller
             'user' => $data,
             'accessToken' => $accessToken
         ])
-        ->cookie('accessToken', $accessToken, null, null, false, true)
-        ->cookie('refreshToken', $refreshToken,  null, null, false, true);
+        ->cookie('accessToken', $accessToken, 60, '/', null, true, true, false, 'Lax')
+        ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
     }
     
     public function login(Request $request) {
@@ -52,13 +52,12 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-
         $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(1))->plainTextToken;
         $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
 
         return response()->json(['message' => 'Login successful'])
-        ->cookie('accessToken', $accessToken,  null, null, null, true, false, false, 'None')
-        ->cookie('refreshToken', $refreshToken,  null, null, null, true, false, false, 'None');
+        ->cookie('accessToken', $accessToken, 60, '/', null, true, true, false, 'Lax')
+        ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
 
     }
 

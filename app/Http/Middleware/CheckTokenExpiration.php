@@ -50,8 +50,8 @@ class CheckTokenExpiration
                 'accessToken' => $newAccessToken,
                 'refreshToken' => $newRefreshToken,
             ])
-            ->cookie('accessToken', $newAccessToken,  null, null, null, true, false, false, 'None')
-            ->cookie('refreshToken', $newRefreshToken,  null, null, null, true, false, false, 'None');
+            ->cookie('accessToken', $newAccessToken, 60, '/', null, true, true, false, 'Lax')
+            ->cookie('refreshToken', $newRefreshToken, 10080, '/', null, true, true, false, 'Lax');
         }
 
         return $next($request);
