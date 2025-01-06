@@ -14,8 +14,14 @@ use App\Http\Controllers\Api\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Authentication routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login']);
+
 Route::middleware('refresh.token')->group(function () {
-    Route::post('/hello', [AuthController::class, 'hello']);
+    
+    // Home routes
+    Route::post('/createGroup', [BudgetController::class, 'createGroup']);
+
 });
