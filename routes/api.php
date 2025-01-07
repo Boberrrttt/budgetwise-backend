@@ -24,5 +24,5 @@ Route::middleware('refresh.token')->group(function () {
     
     // Home routes
     Route::post('/createGroup', [BudgetController::class, 'createGroup']);
-
+    Route::get('/getGroups', [BudgetController::class, 'getGroups']);
 });
