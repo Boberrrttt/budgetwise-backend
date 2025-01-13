@@ -42,8 +42,8 @@ return [
         ],
 
         'api' => [
-            'driver' => 'sanctum', // Use Sanctum for API authentication
-            'provider' => 'users', // Use the 'users' provider to retrieve users
+            'driver' => 'sanctum', 
+            'provider' => 'users', 
         ],
     ],
 

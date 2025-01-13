@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BudgetController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,10 +17,9 @@ use App\Http\Controllers\Api\BudgetController;
 
 // Authentication routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::middleware('refresh.token')->group(function () {
-    
+Route::middleware('auth:sanctum')->group(function () {
     // Home routes
     Route::post('/createGroup', [BudgetController::class, 'createGroup']);
     Route::get('/getGroups', [BudgetController::class, 'getGroups']);

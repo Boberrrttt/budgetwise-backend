@@ -29,20 +29,20 @@ class AuthController extends Controller
             'password' => Hash::make($data['password'])
         ]);
 
-        $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(60))->plainTextToken;
-        $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
+        // $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(60))->plainTextToken;
+        // $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
 
         return response()->json([
             'message' => 'Registration successful',
             'user' => $data,
-            'accessToken' => $accessToken
-        ])
-        ->cookie('accessToken', $accessToken, 70, '/', null, true, true, false, 'Lax')
-        ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
+            // 'accessToken' => $accessToken   
+        ]);
+        // ->cookie('accessToken', $accessToken, 70, '/', null, true, true, false, 'Lax')
+        // ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
     }
     
     public function login(Request $request) {
-        $credentials = $request->validate([
+        $credentials = $request->validate([ 
             'email' => 'required|email',
             'password' => 'required'
         ]);
@@ -53,11 +53,14 @@ class AuthController extends Controller
 
         $user = Auth::user();
         $accessToken = $user->createToken('access-token', ['*'], Carbon::now('Asia/Manila')->addMinute(60))->plainTextToken;
-        $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
-
-        return response()->json(['message' => 'Login successful'])
-        ->cookie('accessToken', $accessToken, 70, '/', null, true, true, false, 'Lax')
-        ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
+        // $refreshToken = $user->createToken('refresh-token', ['*'], Carbon::now('Asia/Manila')->addDays(7))->plainTextToken;
+        // Log::info(['user' => $user, 'accessToken' => $accessToken, 'refreshToken' => $refreshToken]);
+        return response()->json([
+            'message' => 'Login successful',
+            // 'accessToken' => $accessToken
+        ])
+        ->cookie('accessToken', $accessToken, 70, null, null, true, false);
+        // ->cookie('refreshToken', $refreshToken, 10080, null, null, false, true);
 
     }
 }
