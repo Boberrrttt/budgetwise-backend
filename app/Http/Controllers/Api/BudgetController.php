@@ -26,9 +26,7 @@ class BudgetController extends Controller
 
     public function getGroups(Request $request) {
         $user = Auth::user();
-    
-        $groups = Group::where('user_id', $user->id)->get(); 
-
+        $groups = Group::where('user_id', $user->id)->get();
         return response()->json([
             'groups' => $groups,
         ]);
