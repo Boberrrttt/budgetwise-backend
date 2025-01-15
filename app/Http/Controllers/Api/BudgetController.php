@@ -8,6 +8,7 @@ use App\Models\Group;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\BudgetPlan;
 
 class BudgetController extends Controller
 {
@@ -24,6 +25,21 @@ class BudgetController extends Controller
         ]);
     }
 
+    public function createBudgetPlan(Request $request) {
+        $user = Auth::user();
+
+        $budgetPlan = BudgetPlan::create([
+            'name' => $request->name,
+            'allocated_amount' => $request->allocatedAmount,
+            'spent_amount' => $request->spentAmount,
+            'group_id' => $request->group_id,
+        ]);
+
+        return response()->json([
+            'message' => 'new budget plan created'
+        ]);
+    }
+
     public function getGroups(Request $request) {
         $user = Auth::user();
         $groups = Group::where('user_id', $user->id)->get();
@@ -32,7 +48,17 @@ class BudgetController extends Controller
         ]);
     }
 
-    public function createBudgetPlan(Request $request) {
-        
+    public function getBudgetPlan(Request $request){
+        $user = Auth::user();
+
+        $groupId = $request->query('groupId');
+
+        $budgetPlans = BudgetPlan::where('group_id', $groupId)->get();
+        return response()->json([
+            'budgetPlans' => $budgetPlans
+        ]);
+
+
     }
+   
 }

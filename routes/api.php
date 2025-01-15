@@ -23,4 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Home routes
     Route::post('/createGroup', [BudgetController::class, 'createGroup']);
     Route::get('/getGroups', [BudgetController::class, 'getGroups']);
+
+    // budget plan routes
+    Route::post('/createBudgetPlan', [BudgetController::class, 'createBudgetPlan']);
+    Route::get('/getBudgetPlan', [BudgetController::class, 'getBudgetPlan']);
 });
