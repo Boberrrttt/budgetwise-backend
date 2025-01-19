@@ -13,7 +13,7 @@ class BudgetPlan extends Model
     protected $fillable = [
         'name',
         'allocated_amount',
-        'spent_amount'
+        'spent_amount',
         'group_id',
     ];
 

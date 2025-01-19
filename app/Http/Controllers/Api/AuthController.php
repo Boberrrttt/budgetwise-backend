@@ -15,11 +15,11 @@ use Carbon\Carbon;
 class AuthController extends Controller
 {
     public function register(Request $request) {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed'
-        ], [], [], true);
+        // $data = $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:users,email',
+        //     'password' => 'required|string|min:8|confirmed'
+        // ], [], [], true);
         
         $data = $request->only(['name', 'email', 'password']); 
         
@@ -35,7 +35,6 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Registration successful',
             'user' => $data,
-            // 'accessToken' => $accessToken   
         ])
         ->cookie('accessToken', $accessToken, 70, null, null, true, false);
         // ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
@@ -57,7 +56,6 @@ class AuthController extends Controller
         
         return response()->json([
             'message' => 'Login successful',
-            // 'accessToken' => $accessToken
         ])
         ->cookie('accessToken', $accessToken, 70, null, null, true, false);
         // ->cookie('refreshToken', $refreshToken, 10080, null, null, false, true);

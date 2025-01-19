@@ -26,20 +26,28 @@ class BudgetController extends Controller
     }
 
     public function createBudgetPlan(Request $request) {
-        $user = Auth::user();
-
+       
+        $group = Group::where('id', $request->groupId)->first();
+        Log::info($group);
+    
+        if (!$group) {
+            return response()->json([
+                'message' => 'Group not found',
+            ], 404);
+        }
+    
         $budgetPlan = BudgetPlan::create([
             'name' => $request->name,
             'allocated_amount' => $request->allocatedAmount,
-            'spent_amount' => $request->spentAmount,
-            'group_id' => $request->group_id,
+            'spent_amount' => 0,
+            'group_id' => $request->groupId,
         ]);
-
+    
         return response()->json([
             'message' => 'new budget plan created'
         ]);
     }
-
+    
     public function getGroups(Request $request) {
         $user = Auth::user();
         $groups = Group::where('user_id', $user->id)->get();
@@ -57,8 +65,6 @@ class BudgetController extends Controller
         return response()->json([
             'budgetPlans' => $budgetPlans
         ]);
-
-
     }
    
 }

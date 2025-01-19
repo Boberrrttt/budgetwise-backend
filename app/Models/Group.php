@@ -14,6 +14,8 @@ class Group extends Model
      *
      * @var array<int, string>
      */
+    protected $table = 'groups'; // Ensure this matches the database table name
+
     protected $fillable = [
         'name',
         'user_id'
