@@ -26,5 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // budget plan routes
     Route::post('/createBudgetPlan', [BudgetController::class, 'createBudgetPlan']);
+    Route::post('/addItem', [BudgetController::class, 'addItem']);
+
+    Route::get('/getItems', [BudgetController::class, 'getItems']);
     Route::get('/getBudgetPlan', [BudgetController::class, 'getBudgetPlan']);
+    
 });

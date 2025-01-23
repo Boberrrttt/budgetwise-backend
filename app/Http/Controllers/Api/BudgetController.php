@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\BudgetPlan;
+use App\Models\Item;
 
 class BudgetController extends Controller
 {
@@ -65,6 +66,22 @@ class BudgetController extends Controller
         return response()->json([
             'budgetPlans' => $budgetPlans
         ]);
+    }
+
+    public function getItems(Request $request) {
+        $user = Auth::user();
+
+        $planId = $request->query('planId');
+
+        $items = Item::where('budget_plan_id', $planId)->get();
+        return response()->json([
+            'items' => $items
+        ]);
+    }
+
+
+    public function addItem(Request $request) {
+        $user = Auth::user();
     }
    
 }
