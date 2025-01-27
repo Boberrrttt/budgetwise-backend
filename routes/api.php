@@ -30,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/addItem', [BudgetController::class, 'addItem']);    
         Route::get('/getItems', [BudgetController::class, 'getItems']);
         Route::get('/getBudgetPlan', [BudgetController::class, 'getBudgetPlan']);
+        Route::delete('/deleteItem', [BudgetController::class, 'deleteItem']);
     });
 });

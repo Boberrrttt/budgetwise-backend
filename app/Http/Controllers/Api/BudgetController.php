@@ -117,5 +117,27 @@ class BudgetController extends Controller
             'message' => 'item added'
         ]);
     }
+
+    public function deleteItem(Request $request) {
+        $item = Item::find($request->query('itemId'));        
+    
+        if (!$item) {
+            return response()->json([
+                'error' => 'item not found'
+            ], 404);
+        }
+
+        $budgetPlan = BudgetPlan::find($item->budget_plan_id);
+        
+        $budgetPlan->update([
+            'spent_amount' => $budgetPlan->spent_amount - $item->price
+        ]);
+
+        $item->delete();
+
+        return response()->json([
+            'message' => 'item deleted'
+        ]);
+    }
    
 }
