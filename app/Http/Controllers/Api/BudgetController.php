@@ -16,6 +16,11 @@ class BudgetController extends Controller
     public function createGroup(Request $request) {
         $user = Auth::user();
 
+        // make request form
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
         $group = Group::create([
             'name' => $request->name,
             'user_id' => $user->id
@@ -27,10 +32,9 @@ class BudgetController extends Controller
     }
 
     public function createBudgetPlan(Request $request) {
-       
+       // you can use find instead of where
         $group = Group::where('id', $request->groupId)->first();
-        Log::info($group);
-    
+        
         if (!$group) {
             return response()->json([
                 'message' => 'Group not found',
@@ -71,17 +75,47 @@ class BudgetController extends Controller
     public function getItems(Request $request) {
         $user = Auth::user();
 
+        $budgetPlan = BudgetPlan::find($request->query('planId'));
+        
+        if (!$budgetPlan) {
+            return response()->json([
+                'error' => 'budget plan not found'
+            ], 404);
+        }
+
         $planId = $request->query('planId');
 
         $items = Item::where('budget_plan_id', $planId)->get();
         return response()->json([
-            'items' => $items
+            'items' => $items,
+            'updatedSpentAmount' => $budgetPlan->spent_amount
         ]);
     }
 
-
     public function addItem(Request $request) {
         $user = Auth::user();
+    
+        $budgetPlan = BudgetPlan::find($request->input('planId'));
+    
+        if (!$budgetPlan) {
+            return response()->json([
+                'error' => 'budget plan not found'
+            ], 404);
+        }
+    
+        $budgetPlan->update([
+            'spent_amount' => $budgetPlan->spent_amount + $request->input('price')
+        ]);
+    
+        Item::create([
+            'name' => $request->input('name'),
+            'price' => $request->input('price'),
+            'budget_plan_id' => $request->input('planId')
+        ]);
+    
+        return response()->json([
+            'message' => 'item added'
+        ]);
     }
    
 }

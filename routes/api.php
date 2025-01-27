@@ -25,10 +25,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getGroups', [BudgetController::class, 'getGroups']);
 
     // budget plan routes
-    Route::post('/createBudgetPlan', [BudgetController::class, 'createBudgetPlan']);
-    Route::post('/addItem', [BudgetController::class, 'addItem']);
-
-    Route::get('/getItems', [BudgetController::class, 'getItems']);
-    Route::get('/getBudgetPlan', [BudgetController::class, 'getBudgetPlan']);
-    
+    Route::prefix('budgetPlan')->group(function () {
+        Route::post('/createBudgetPlan', [BudgetController::class, 'createBudgetPlan']);
+        Route::post('/addItem', [BudgetController::class, 'addItem']);    
+        Route::get('/getItems', [BudgetController::class, 'getItems']);
+        Route::get('/getBudgetPlan', [BudgetController::class, 'getBudgetPlan']);
+    });
 });
