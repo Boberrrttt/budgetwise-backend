@@ -62,7 +62,6 @@ class BudgetController extends Controller
     }
 
     public function getBudgetPlan(Request $request){
-        $user = Auth::user();
 
         $groupId = $request->query('groupId');
 
@@ -73,7 +72,6 @@ class BudgetController extends Controller
     }
 
     public function getItems(Request $request) {
-        $user = Auth::user();
 
         $budgetPlan = BudgetPlan::find($request->query('planId'));
         
@@ -93,8 +91,7 @@ class BudgetController extends Controller
     }
 
     public function addItem(Request $request) {
-        $user = Auth::user();
-    
+        
         $budgetPlan = BudgetPlan::find($request->input('planId'));
     
         if (!$budgetPlan) {
@@ -137,6 +134,22 @@ class BudgetController extends Controller
 
         return response()->json([
             'message' => 'item deleted'
+        ]);
+    }
+
+    public function deletePlan(Request $request) {
+        $budgetPlan = BudgetPlan::find($request->query('planId'));
+
+        if (!$budgetPlan) {
+            return response()->json([
+                'error' => 'budget plan not found'
+            ], 404);
+        }
+
+        $budgetPlan->delete();
+
+        return response()->json([
+            'message' => 'budget plan deleted'
         ]);
     }
    
