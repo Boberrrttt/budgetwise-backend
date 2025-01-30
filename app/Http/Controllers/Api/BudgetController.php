@@ -32,22 +32,21 @@ class BudgetController extends Controller
     }
 
     public function createBudgetPlan(Request $request) {
-       // you can use find instead of where
-        $group = Group::where('id', $request->groupId)->first();
-        
-        if (!$group) {
+        $group = Group::find($request->groupId);
+
+        if (!$group) {  
             return response()->json([
                 'message' => 'Group not found',
             ], 404);
         }
-    
+
         $budgetPlan = BudgetPlan::create([
             'name' => $request->name,
             'allocated_amount' => $request->allocatedAmount,
             'spent_amount' => 0,
             'group_id' => $request->groupId,
         ]);
-    
+
         return response()->json([
             'message' => 'new budget plan created'
         ]);
@@ -64,7 +63,6 @@ class BudgetController extends Controller
     public function getBudgetPlan(Request $request){
 
         $groupId = $request->query('groupId');
-
         $budgetPlans = BudgetPlan::where('group_id', $groupId)->get();
         return response()->json([
             'budgetPlans' => $budgetPlans

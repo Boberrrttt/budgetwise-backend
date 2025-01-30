@@ -24,7 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/createGroup', [BudgetController::class, 'createGroup']);
     Route::get('/getGroups', [BudgetController::class, 'getGroups']);
 
-    // budget plan routes
     Route::prefix('budgetPlan')->group(function () {
         Route::post('/createBudgetPlan', [BudgetController::class, 'createBudgetPlan']);
         Route::post('/addItem', [BudgetController::class, 'addItem']);    
