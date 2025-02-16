@@ -40,6 +40,7 @@ class AuthController extends Controller
         // ->cookie('refreshToken', $refreshToken, 10080, '/', null, true, true, false, 'Lax');
     }
     
+
     public function login(Request $request) {
         $credentials = $request->validate([ 
             'email' => 'required|email',

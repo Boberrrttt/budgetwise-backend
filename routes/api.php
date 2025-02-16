@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BudgetController;
+use App\Http\Controllers\PingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,3 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/deleteBudgetPlan', [BudgetController::class, 'deletePlan']);
     });
 });
+
+Route::get('/ping', PingController::class);
