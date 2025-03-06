@@ -15,11 +15,11 @@ use Carbon\Carbon;
 class AuthController extends Controller
 {
     public function register(Request $request) {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed'
-        ], [], [], true);
+        // $data = $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     // 'email' => 'required|email|unique:users,email',
+        //     'password' => 'required|string|min:8|confirmed',
+        // ]);
         
         $data = $request->only(['name', 'email', 'password']); 
         

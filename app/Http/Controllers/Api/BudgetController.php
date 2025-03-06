@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\BudgetPlan;
 use App\Models\Item;
+use App\Events\NewBudgetPlanCreated;
 
 class BudgetController extends Controller
 {
@@ -47,6 +48,8 @@ class BudgetController extends Controller
             'group_id' => $request->groupId,
         ]);
 
+        event(new NewBudgetPlanCreated($budgetPlan, $request->groupId));
+
         return response()->json([
             'message' => 'new budget plan created'
         ]);
@@ -61,7 +64,6 @@ class BudgetController extends Controller
     }
 
     public function getBudgetPlan(Request $request){
-
         $groupId = $request->query('groupId');
         $budgetPlans = BudgetPlan::where('group_id', $groupId)->get();
         return response()->json([
